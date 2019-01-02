@@ -8,7 +8,7 @@ type following commands to run this project
 
 2 ) Get inside the downloaded folder
 
-	cd d-drive-master
+	cd ddrive
 
 
 3 ) Install the requirements:
