@@ -1,0 +1,87 @@
+{% extends 'base`.html' %}
+
+{% block content %}
+ 
+  <h1 class="page-header">
+    Files
+    <small>/ via {% block title %}{% endblock %}</small>
+  </h1>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Menu</h3>
+        </div>
+        <div class="list-group">
+         
+         <a href="{% url 'DragAndDropUploadView' %}" class="list-group-item{% if request.path == '/files/drag_and_drop_upload/' %} active{% endif %}">
+            Drag and Drop
+          </a>
+
+          <a href="{% url 'ProgressBarUploadView' %}" class="list-group-item{% if request.path == '/files/progress_bar_upload/' %} active{% endif %}">
+            Progress Bar Upload
+          </a>
+         
+        </div>
+      </div>
+    </div>
+   {% block photos_content_c %}
+
+ <div class="col-md-15" style = " float: left; margin-left: 0px; margin-right: 20px "  >
+     
+
+    <form method="post" action="{% url 'clear_database' %} ">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <button type="submit" class="btn btn-danger pull-right">
+      <span class="glyphicon glyphicon-trash" align="center"></span> Clear Database
+    </button>
+  </form>
+
+   </div>
+
+   {% block photos_content %}
+   {% endblock %}
+
+      {% endblock %}
+
+
+
+
+
+
+
+    <table id="gallery" class="table table-bordered">
+    <thead>
+      <tr>
+        <th>    Name    </th> 
+  		<th>Size(in bytes)</th>
+                <th>Uploaded At</th> 
+  		<th> download </th> 
+  		<th> delete </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in fls %}
+        <tr>
+          <td>{{ f.file.name }}</td>
+          <td>{{ f.file.size }}</td>
+           <td>{{ f.uploaded_at }}</td>
+           <td> <a href="{{ f.file.url }}" class="btn btn-primary glyphicon glyphicon-cloud-download">Download</a>   </td>
+
+          <td>
+  	<form method="post" action="{% url 'delete_file' f.pk %}">
+  		{% csrf_token %}
+  		<button type="submit" class=" btn-danger btn-sm"> Delete </button>
+  	</form>
+  	</td> 
+
+        </tr>
+         
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+
+{% endblock %}
